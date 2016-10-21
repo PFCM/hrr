@@ -150,7 +150,7 @@ def retrieve(inv_key, memory):
     """
     # fingers crossed for some broadcasting
     if not isinstance(memory, collections.Sequence):
-        return _make_trace(inv_key, memory, val_split=2)
+        return tf.squeeze(_make_trace(inv_key, memory, val_split=2))
     else:
         # have to apply all perms, retrieve the lot and average
         permed_keys = _apply_perms(inv_key, memory[1:])
