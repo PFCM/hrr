@@ -35,6 +35,7 @@ def _make_trace(key, value, key_split=1, val_split=1):
     Returns:
         the combined trace (by element-wise complex multiplication)
     """
+    # pull out the real and imaginary parts
     re_k, im_k = tf.split(key_split, 2, key)
     re_v, im_v = tf.split(val_split, 2, value)
     # if we had to do the split on different axis, we need to make sure the
@@ -137,7 +138,6 @@ def store(key, value, memory):
         return [memory[0] + traces] + memory[1:]
 
 
-# TODO(pfcm): think about how/whether to remove things from the memory
 def retrieve(inv_key, memory):
     """Retrieves a batch of keys from a batch of replicas of memories.
 
