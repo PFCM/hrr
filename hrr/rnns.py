@@ -43,7 +43,7 @@ class SimpleHRRCell(tf.nn.rnn_cell.RNNCell):
         """
         initial_out = tf.zeros([batch_size, self._width*2], dtype=dtype)
         mem = hrr.get_holographic_memory(self._width, batch_size,
-                                         self._replicas)
+                                         self._replicas, dtype=dtype)
         return (initial_out, mem)
 
     def __call__(self, inputs, state, scope=None):

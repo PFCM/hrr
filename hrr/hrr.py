@@ -77,7 +77,8 @@ def _apply_perms(key, perms):
     return permed_keys
 
 
-def get_holographic_memory(width, batch_size, replicas=1, scope=None):
+def get_holographic_memory(width, batch_size, replicas=1, scope=None,
+                           dtype=tf.float32):
     """Pretty much just gets a big tensor. We work a Fourier transform away
     from Plate's initial circular convolution based presentation, which means
     that whenever we deal with things that operated on the representation,
@@ -90,6 +91,7 @@ def get_holographic_memory(width, batch_size, replicas=1, scope=None):
         batch_size (int): how many to do at once.
         replicas (Optional[int]): how many copies the memory has.
         scope (Optional): a variable scope for the added operations.
+        dtype (Optional): tensorflow datatype to use for the memory.
 
     Returns:
         tensor: a blank representation, which is just a float tensor with shape
@@ -100,7 +102,8 @@ def get_holographic_memory(width, batch_size, replicas=1, scope=None):
     """
     with tf.variable_scope(scope or 'hrr',
                            initializer=tf.constant_initializer(0.0)):
-        rep = tf.get_variable('hrr', shape=[batch_size, replicas, width * 2])
+        rep = tf.get_variable('hrr', shape=[batch_size, replicas, width * 2],
+                              dtype=dtype, trainable=False)
 
         if replicas > 1:
             indices = tf.range(width)
