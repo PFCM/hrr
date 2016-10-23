@@ -53,11 +53,11 @@ class SimpleHRRCell(tf.nn.rnn_cell.RNNCell):
 
             concat = _linear(tf.concat(1, [h, inputs]),
                              4*self._width, True, scope='keys')
-
+            concat = tf.nn.tanh(concat)
             in_key, out_key = tf.split(1, 2, concat)
 
             in_val = _linear(inputs, self._width*2, True, scope='input')
-            in_val = tf.nn.relu(in_val)
+            in_val = in_val
 
             updated_mem = hrr.store(in_key, in_val, mem)
             output = hrr.retrieve(out_key, updated_mem)

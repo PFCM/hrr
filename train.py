@@ -104,7 +104,7 @@ def run_epoch(dataset, eval_op, train_op, input_var, target_var, istatevar,
         total_loss += loss
         total_steps += 1
     print()
-    return total_los / total_steps
+    return total_loss / total_steps
 
 
 def main(_):
@@ -146,7 +146,7 @@ def main(_):
 
         train_op = opt.minimize(loss_op)
     print('\r{:-^50}'.format('got train ops'))
-
+    noop = tf.no_op()
     sv = tf.train.Supervisor(logdir=FLAGS.logdir, summary_op=None)
 
     print('{:~^50}'.format('initialising (preparing session)'),
@@ -158,7 +158,7 @@ def main(_):
             for epoch in range(FLAGS.num_epochs):
                 train_loss = run_epoch(train, loss_op, train_op, inputs,
                                        targets, initial_state, final_state)
-                valid_loss = run_epoch(valid, loss_op, tf.no_op(), inputs,
+                valid_loss = run_epoch(valid, loss_op, noop, inputs,
                                        targets, initial_state, final_state)
 
                 print('~Epoch {}'.format(epoch+1))
